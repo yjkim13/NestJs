@@ -12,8 +12,8 @@ export class BoardsService {
     return this.boards;
   }
 
-  creatBoard(createBoardDto : CreateBoardDto) {
-    const {title,description} = createBoardDto
+  creatBoard(createBoardDto: CreateBoardDto) {
+    const { title, description } = createBoardDto
 
     const board: Board = {
       id: uuid(),
@@ -27,11 +27,17 @@ export class BoardsService {
     return board;
   }
 
-  getBoardById(id:string) : Board {
+  getBoardById(id: string): Board {
     return this.boards.find((board) => board.id === id);
   }
 
-  deleteBoard(id:string):void{
+  deleteBoard(id: string): void {
     this.boards = this.boards.filter((board) => board.id !== id)
+  }
+
+  updateBoardStatus(id: string, status: BoardStatus): Board {
+    const board = this.getBoardById(id);
+    board.status = status;
+    return board;
   }
 }
