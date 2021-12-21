@@ -1,7 +1,7 @@
 import { BadRequestException, PipeTransform } from "@nestjs/common";
 import { AnyRecord } from "dns";
 import { of } from "rxjs";
-import { BoardStatus } from "../board.model";
+import { BoardStatus } from "../board-status.enum";
 
 export class BoardStatusValidationPipe implements PipeTransform {
     readonly StatusOptions = [
