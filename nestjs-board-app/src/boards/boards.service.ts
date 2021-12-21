@@ -3,9 +3,17 @@ import { BoardStatus } from './board-status.enum';
 import { v1 as uuid } from 'uuid';
 // 여기서 v1은 uuid의 버젼 v1을 쓰는거고 as 이름을 v1이 아닌 uuid로 쓰기 위함
 import { CreateBoardDto } from './dto/create-board.dto';
+import { BoardRepository } from './board.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Board } from './board.entity';
 
 @Injectable()
 export class BoardsService {
+  constructor(
+    // 이 데코레이터를 이용해서 이 서비스에서 BoardRepository를 이용한다고 이걸 boardRepository 변수에 넣어줍니다.
+    @InjectRepository(BoardRepository)
+    private boardRepository: BoardRepository,
+  ) { }
 
 
   // getAllBoards(): Board[] {
@@ -27,6 +35,16 @@ export class BoardsService {
   //   return board;
   // }
 
+  async getBoardById(id: number): Promise<Board> {//Entitiy를 type으로 선언한다.
+    const found = await this.boardRepository.findOne(id);
+
+    if (!found) {
+      throw new NotFoundException(`Can't find Board with id ${id}`)
+    }
+
+    return found
+
+  }
   // getBoardById(id: string): Board {
   //   const found = this.boards.find((board) => board.id === id);
   //   if (!found) {
