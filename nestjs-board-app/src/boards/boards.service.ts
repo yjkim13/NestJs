@@ -35,6 +35,18 @@ export class BoardsService {
   //   return board;
   // }
 
+  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+    const { title, description } = createBoardDto;
+    const board = this.boardRepository.create({
+      title,
+      description,
+      status: BoardStatus.PUBLIC
+    })
+
+    await this.boardRepository.save(board)
+    return board;
+  }
+
   async getBoardById(id: number): Promise<Board> {//Entitiy를 type으로 선언한다.
     const found = await this.boardRepository.findOne(id);
 
