@@ -61,6 +61,12 @@ export class BoardsService {
   async deleteBoard(id: number): Promise<void> {
     const result = await this.boardRepository.delete(id)
 
+
+    //삭제하려고 하는 id가 테이블에 없는 경우 에러처리 문구 삽입
+    if (result.affected === 0) {
+      throw new NotFoundException(`Can't find Board with id ${id}`)
+    }
+
     console.log('result', result);
 
   }
@@ -68,6 +74,16 @@ export class BoardsService {
   //   const found = this.getBoardById(id)
   //   this.boards = this.boards.filter((board) => board.id !== found.id)
   // }
+
+  async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
+    const board = await this.getBoardById(id);
+
+    board.status = status;
+    await this.boardRepository.save(board);
+
+    return board;
+
+  }
 
   // updateBoardStatus(id: string, status: BoardStatus): Board {
   //   const board = this.getBoardById(id);
