@@ -2,6 +2,8 @@ import { Body, Controller, Post, Req, UseGuards, ValidationPipe } from '@nestjs/
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credential.dto';
+import { getUser } from './get-user.decorator';
+import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -20,7 +22,7 @@ export class AuthController {
 
     @Post('/test')
     @UseGuards(AuthGuard())//토큰이 없거나 잘못된거면 인증할 수 없다.
-    test(@Req() req) {
-        console.log('req', req);
+    test(@getUser() user: User) {
+        console.log('user', user);
     }
 }
