@@ -7,6 +7,7 @@ import { BoardRepository } from './board.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
 import { User } from 'src/auth/user.entity';
+import { getUser } from 'src/auth/get-user.decorator';
 
 @Injectable()
 export class BoardsService {
@@ -71,8 +72,8 @@ export class BoardsService {
   //   return found
   // }
 
-  async deleteBoard(id: number): Promise<void> {
-    const result = await this.boardRepository.delete(id)
+  async deleteBoard(id: number, @getUser() user: User): Promise<void> {
+    const result = await this.boardRepository.delete({ id, user })
 
 
     //삭제하려고 하는 id가 테이블에 없는 경우 에러처리 문구 삽입
